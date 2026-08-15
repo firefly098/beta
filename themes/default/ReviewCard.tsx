@@ -1,4 +1,5 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import { OperatorLogo } from "@/themes/default/OperatorLogo";
 
 export function ReviewCard({
   title,
@@ -6,12 +7,16 @@ export function ReviewCard({
   rating,
   summary,
   meta,
+  logoUrl,
+  logoBackground,
 }: {
   title: string;
   href: string;
   rating?: number;
   summary?: string;
   meta?: string;
+  logoUrl?: string | null;
+  logoBackground?: string | null;
 }) {
   return (
     <Link
@@ -19,6 +24,11 @@ export function ReviewCard({
       className="group relative block overflow-hidden rounded-[1.25rem] border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] transition duration-300 hover:-translate-y-1 hover:border-[var(--brand)]/40"
     >
       <div className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-[var(--brand)] to-[var(--accent)] transition duration-300 group-hover:scale-x-100" />
+      {logoUrl ? (
+        <div className="mb-4">
+          <OperatorLogo name={title} src={logoUrl} background={logoBackground} size="sm" />
+        </div>
+      ) : null}
       <div className="flex items-start justify-between gap-3">
         <div>
           {meta ? (

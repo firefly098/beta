@@ -1,4 +1,5 @@
 import { CtaButton, JsonLd, ProsCons, RgBlock } from "@/themes/default/ui";
+import { OperatorLogo } from "@/themes/default/OperatorLogo";
 import { prisma } from "@/lib/prisma";
 import { publishedWhere } from "@/lib/publish";
 import { resolveSeo } from "@/lib/site";
@@ -90,6 +91,14 @@ export default async function CasinoReviewPage({
           </p>
           <div className="mt-5 grid gap-8 lg:grid-cols-[1.4fr_0.8fr] lg:items-end">
             <div>
+              <div className="mb-5">
+                <OperatorLogo
+                  name={item.name}
+                  src={item.logo?.url}
+                  background={item.logoBackground}
+                  size="lg"
+                />
+              </div>
               <h1 className="animate-rise font-display text-4xl font-semibold tracking-tight md:text-5xl">
                 {item.name} Review
               </h1>

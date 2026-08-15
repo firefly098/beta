@@ -14,6 +14,7 @@ export default async function CasinosArchivePage() {
   const items = await prisma.casinoReview.findMany({
     where: publishedWhere,
     orderBy: { rating: "desc" },
+    include: { logo: true },
   });
 
   return (
@@ -32,6 +33,8 @@ export default async function CasinosArchivePage() {
             href={`/casinos/${c.slug}`}
             rating={c.rating}
             summary={c.verdict || c.bonusHighlight}
+            logoUrl={c.logo?.url}
+            logoBackground={c.logoBackground}
           />
         ))}
       </div>

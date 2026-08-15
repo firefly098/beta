@@ -170,6 +170,7 @@ model CasinoReview {
   ctaTracking     String        @default("")
   logoId          String?
   logo            Media?        @relation("CasinoLogo", fields: [logoId], references: [id])
+  logoBackground  String        @default("")
   status          PublishStatus @default(DRAFT)
   publishedAt     DateTime?
   scheduledAt     DateTime?
@@ -231,6 +232,7 @@ model BookmakerReview {
   ctaTracking     String        @default("")
   logoId          String?
   logo            Media?        @relation("BookmakerLogo", fields: [logoId], references: [id])
+  logoBackground  String        @default("")
   status          PublishStatus @default(DRAFT)
   publishedAt     DateTime?
   scheduledAt     DateTime?

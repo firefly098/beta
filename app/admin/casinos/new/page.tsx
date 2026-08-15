@@ -31,6 +31,7 @@ export default async function NewCasinoPage() {
           <StatusSelect />
           <AuthorSelect authors={authors} />
           <MediaSelect media={media} name="logoId" label="Logo" />
+          <Field label="Logo background (hex)" name="logoBackground" defaultValue="#195684" />
           <Field label="Min deposit" name="minDeposit" />
           <Field label="Payout speed" name="payoutSpeed" />
           <Field label="Bonus highlight" name="bonusHighlight" />

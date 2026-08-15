@@ -35,6 +35,7 @@ export default async function HomePage() {
     featuredCasinoIds.length
       ? prisma.casinoReview.findMany({
           where: { id: { in: featuredCasinoIds }, ...publishedWhere },
+          include: { logo: true },
         })
       : Promise.resolve([]),
     featuredBookmakerIds.length
@@ -185,6 +186,8 @@ export default async function HomePage() {
                     href={`/casinos/${c.slug}`}
                     rating={c.rating}
                     summary={c.verdict || c.bonusHighlight}
+                    logoUrl={c.logo?.url}
+                    logoBackground={c.logoBackground}
                   />
                 ))}
               </div>

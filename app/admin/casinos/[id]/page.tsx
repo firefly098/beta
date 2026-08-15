@@ -48,6 +48,7 @@ export default async function EditCasinoPage({
           <StatusSelect defaultValue={item.status} />
           <AuthorSelect authors={authors} defaultValue={item.authorId} />
           <MediaSelect media={media} name="logoId" label="Logo" defaultValue={item.logoId} />
+          <Field label="Logo background (hex)" name="logoBackground" defaultValue={item.logoBackground} />
           <Field label="Min deposit" name="minDeposit" defaultValue={item.minDeposit} />
           <Field label="Payout speed" name="payoutSpeed" defaultValue={item.payoutSpeed} />
           <Field label="Bonus highlight" name="bonusHighlight" defaultValue={item.bonusHighlight} />
