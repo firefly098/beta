@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, DM_Sans } from "next/font/google";
+import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
 
-const display = Source_Serif_4({
+const display = Fraunces({
   variable: "--font-display",
   subsets: ["latin"],
+  axes: ["SOFT", "WONK", "opsz"],
 });
 
-const sans = DM_Sans({
+const sans = Manrope({
   variable: "--font-sans-ui",
   subsets: ["latin"],
 });
@@ -20,9 +21,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} h-full`}>
-      <body className="min-h-full font-[family-name:var(--font-sans-ui)] antialiased">
-        {children}
-      </body>
+      <body className="min-h-full antialiased">{children}</body>
     </html>
   );
 }

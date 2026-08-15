@@ -1,4 +1,5 @@
 import { ReviewCard } from "@/themes/default/ReviewCard";
+import { SectionHeading } from "@/themes/default/ui";
 import { prisma } from "@/lib/prisma";
 import { publishedWhere } from "@/lib/publish";
 import { resolveSeo } from "@/lib/site";
@@ -16,15 +17,17 @@ export default async function CasinosArchivePage() {
   });
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold">
-        Casino reviews
-      </h1>
-      <p className="mt-2 text-[var(--muted)]">Independent ratings, bonuses, and payout details.</p>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <main className="site-shell py-14 md:py-18">
+      <SectionHeading
+        eyebrow="Directory"
+        title="Casino reviews"
+        subtitle="Independent ratings covering bonuses, payments, and payout speed."
+      />
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((c) => (
           <ReviewCard
             key={c.id}
+            meta="Casino"
             title={c.name}
             href={`/casinos/${c.slug}`}
             rating={c.rating}

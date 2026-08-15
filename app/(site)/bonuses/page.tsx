@@ -1,4 +1,5 @@
 import { ReviewCard } from "@/themes/default/ReviewCard";
+import { SectionHeading } from "@/themes/default/ui";
 import { prisma } from "@/lib/prisma";
 import { publishedWhere } from "@/lib/publish";
 import { resolveSeo } from "@/lib/site";
@@ -17,15 +18,17 @@ export default async function BonusesArchivePage() {
   });
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="font-[family-name:var(--font-display)] text-3xl font-semibold">
-        Bonus reviews
-      </h1>
-      <p className="mt-2 text-[var(--muted)]">Welcome offers, free spins, and wagering breakdowns.</p>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <main className="site-shell py-14">
+      <SectionHeading
+        eyebrow="Directory"
+        title="Bonus reviews"
+        subtitle="Welcome offers, free spins, and wagering broken down."
+      />
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((c) => (
           <ReviewCard
             key={c.id}
+            meta="Bonus"
             title={c.title}
             href={`/bonuses/${c.slug}`}
             summary={`${c.amount}${c.casino ? ` · ${c.casino.name}` : c.bookmaker ? ` · ${c.bookmaker.name}` : ""}`}
