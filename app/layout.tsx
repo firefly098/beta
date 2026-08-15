@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
-import { Syne, Plus_Jakarta_Sans } from "next/font/google";
+import { Outfit, Manrope } from "next/font/google";
 import "./globals.css";
 
-const display = Syne({
+const display = Outfit({
   variable: "--font-display",
   subsets: ["latin"],
   weight: ["500", "600", "700", "800"],
 });
 
-const sans = Plus_Jakarta_Sans({
+const sans = Manrope({
   variable: "--font-sans-ui",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "Bet Desk Reviews",
-  description: "Independent casino and bookmaker reviews",
+  title: "CasinoRank",
+  description: "Independent casino reviews, bonuses, and trusted rankings",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
