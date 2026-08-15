@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Casino Review CMS (beta)
 
-## Getting Started
+WordPress-style CMS for casino, bookmaker, and bonus reviews. Built with Next.js, Prisma, and Auth.js.
 
-First, run the development server:
+## Quick start
 
 ```bash
+npm install
+cp .env.example .env
+npm run db:setup
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Public site: http://localhost:3000
+- Admin: http://localhost:3000/admin  
+  Default login from `.env`: `admin@example.com` / `admin123`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Content: Pages, Casino reviews, Bookmaker reviews, Bonus reviews, Authors, Media
+- Homepage options + comparison table
+- Menu management (header/footer)
+- SEO fields with live SERP preview + character counts
+- Sitemap, robots.txt, Review/FAQ/Organization JSON-LD
+- Affiliate CTAs (`rel=sponsored`) + responsible gambling blocks
+- Theme layer in `themes/default` (swap later for other domains/layouts)
 
-## Learn More
+## Environment
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Purpose |
+|----------|---------|
+| `DATABASE_URL` | SQLite locally (`file:./dev.db`). Use Postgres on Vercel. |
+| `AUTH_SECRET` | Session secret (`openssl rand -base64 32`) |
+| `AUTH_URL` | Site URL (production domain) |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Seeded admin user |
+| `BLOB_READ_WRITE_TOKEN` | Optional Vercel Blob; else uploads go to `public/uploads` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Connect the GitHub repo (already linked if using this project’s remote).
+2. Add env vars in the Vercel project settings.
+3. For production DB, create Vercel Postgres (or Neon), set `DATABASE_URL`, then either:
+   - Change Prisma `provider` to `postgresql` and run `prisma db push` against production, **or**
+   - Keep SQLite only for local and migrate schema to Postgres before go-live.
+4. Optionally add Blob store and set `BLOB_READ_WRITE_TOKEN`.
+5. Deploy from `main`. After first deploy, run seed against production if needed.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run db:setup` — push schema + seed
+- `npm run db:seed` — re-seed admin/sample content
+- `npm run build` — generate Prisma client + Next build

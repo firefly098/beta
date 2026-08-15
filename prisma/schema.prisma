@@ -1,0 +1,405 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+}
+
+enum BonusType {
+  WELCOME
+  FREE_SPINS
+  CASHBACK
+  DEPOSIT
+  NO_DEPOSIT
+  OTHER
+}
+
+enum MenuLocation {
+  HEADER
+  FOOTER
+}
+
+enum ComparisonEntityType {
+  CASINO
+  BOOKMAKER
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Author {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  bio       String   @default("")
+  avatarId  String?
+  avatar    Media?   @relation(fields: [avatarId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pages      Page[]
+  casinos    CasinoReview[]
+  bookmakers BookmakerReview[]
+  bonuses    BonusReview[]
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String   @default("")
+  width     Int?
+  height    Int?
+  filename  String
+  mimeType  String   @default("")
+  size      Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  authors           Author[]
+  pageOgs           Page[]             @relation("PageOg")
+  casinoLogos       CasinoReview[]     @relation("CasinoLogo")
+  casinoOgs         CasinoReview[]     @relation("CasinoOg")
+  bookmakerLogos    BookmakerReview[]  @relation("BookmakerLogo")
+  bookmakerOgs      BookmakerReview[]  @relation("BookmakerOg")
+  bonusOgs          BonusReview[]      @relation("BonusOg")
+  siteLogo          SiteSettings[]     @relation("SiteLogo")
+  siteFavicon       SiteSettings[]     @relation("SiteFavicon")
+  siteDefaultOg     SiteSettings[]     @relation("SiteDefaultOg")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pages      PageCategory[]
+  casinos    CasinoCategory[]
+  bookmakers BookmakerCategory[]
+  bonuses    BonusCategory[]
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pages      PageTag[]
+  casinos    CasinoTag[]
+  bookmakers BookmakerTag[]
+  bonuses    BonusTag[]
+}
+
+model Page {
+  id              String        @id @default(cuid())
+  title           String
+  slug            String        @unique
+  body            String        @default("")
+  status          PublishStatus @default(DRAFT)
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  authorId        String?
+  author          Author?       @relation(fields: [authorId], references: [id])
+  seoTitle        String        @default("")
+  seoDescription  String        @default("")
+  canonicalUrl    String        @default("")
+  robots          String        @default("index,follow")
+  ogTitle         String        @default("")
+  ogDescription   String        @default("")
+  ogImageId       String?
+  ogImage         Media?        @relation("PageOg", fields: [ogImageId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  categories PageCategory[]
+  tags       PageTag[]
+}
+
+model PageCategory {
+  pageId     String
+  categoryId String
+  page       Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([pageId, categoryId])
+}
+
+model PageTag {
+  pageId String
+  tagId  String
+  page   Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([pageId, tagId])
+}
+
+model CasinoReview {
+  id              String        @id @default(cuid())
+  name            String
+  slug            String        @unique
+  body            String        @default("")
+  rating          Float         @default(0)
+  pros            String        @default("[]") // JSON string array
+  cons            String        @default("[]")
+  licenses        String        @default("[]")
+  payments        String        @default("[]")
+  providers       String        @default("[]")
+  minDeposit      String        @default("")
+  payoutSpeed     String        @default("")
+  verdict         String        @default("")
+  bonusHighlight  String        @default("")
+  ctaLabel        String        @default("Visit Casino")
+  ctaUrl          String        @default("")
+  ctaTracking     String        @default("")
+  logoId          String?
+  logo            Media?        @relation("CasinoLogo", fields: [logoId], references: [id])
+  status          PublishStatus @default(DRAFT)
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  authorId        String?
+  author          Author?       @relation(fields: [authorId], references: [id])
+  seoTitle        String        @default("")
+  seoDescription  String        @default("")
+  canonicalUrl    String        @default("")
+  robots          String        @default("index,follow")
+  ogTitle         String        @default("")
+  ogDescription   String        @default("")
+  ogImageId       String?
+  ogImage         Media?        @relation("CasinoOg", fields: [ogImageId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  categories CasinoCategory[]
+  tags       CasinoTag[]
+  bonuses    BonusReview[]
+}
+
+model CasinoCategory {
+  casinoId   String
+  categoryId String
+  casino     CasinoReview @relation(fields: [casinoId], references: [id], onDelete: Cascade)
+  category   Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([casinoId, categoryId])
+}
+
+model CasinoTag {
+  casinoId String
+  tagId    String
+  casino   CasinoReview @relation(fields: [casinoId], references: [id], onDelete: Cascade)
+  tag      Tag          @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([casinoId, tagId])
+}
+
+model BookmakerReview {
+  id              String        @id @default(cuid())
+  name            String
+  slug            String        @unique
+  body            String        @default("")
+  rating          Float         @default(0)
+  pros            String        @default("[]")
+  cons            String        @default("[]")
+  licenses        String        @default("[]")
+  payments        String        @default("[]")
+  sportsCoverage  String        @default("")
+  liveBetting     Boolean       @default(true)
+  hasApps         Boolean       @default(true)
+  minDeposit      String        @default("")
+  payoutSpeed     String        @default("")
+  verdict         String        @default("")
+  bonusHighlight  String        @default("")
+  ctaLabel        String        @default("Visit Bookmaker")
+  ctaUrl          String        @default("")
+  ctaTracking     String        @default("")
+  logoId          String?
+  logo            Media?        @relation("BookmakerLogo", fields: [logoId], references: [id])
+  status          PublishStatus @default(DRAFT)
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  authorId        String?
+  author          Author?       @relation(fields: [authorId], references: [id])
+  seoTitle        String        @default("")
+  seoDescription  String        @default("")
+  canonicalUrl    String        @default("")
+  robots          String        @default("index,follow")
+  ogTitle         String        @default("")
+  ogDescription   String        @default("")
+  ogImageId       String?
+  ogImage         Media?        @relation("BookmakerOg", fields: [ogImageId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  categories BookmakerCategory[]
+  tags       BookmakerTag[]
+  bonuses    BonusReview[]
+}
+
+model BookmakerCategory {
+  bookmakerId String
+  categoryId  String
+  bookmaker   BookmakerReview @relation(fields: [bookmakerId], references: [id], onDelete: Cascade)
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([bookmakerId, categoryId])
+}
+
+model BookmakerTag {
+  bookmakerId String
+  tagId       String
+  bookmaker   BookmakerReview @relation(fields: [bookmakerId], references: [id], onDelete: Cascade)
+  tag         Tag             @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([bookmakerId, tagId])
+}
+
+model BonusReview {
+  id              String        @id @default(cuid())
+  title           String
+  slug            String        @unique
+  body            String        @default("")
+  bonusType       BonusType     @default(WELCOME)
+  amount          String        @default("")
+  wagering        String        @default("")
+  termsSummary    String        @default("")
+  casinoId        String?
+  casino          CasinoReview? @relation(fields: [casinoId], references: [id])
+  bookmakerId     String?
+  bookmaker       BookmakerReview? @relation(fields: [bookmakerId], references: [id])
+  ctaLabel        String        @default("Claim Bonus")
+  ctaUrl          String        @default("")
+  ctaTracking     String        @default("")
+  status          PublishStatus @default(DRAFT)
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  authorId        String?
+  author          Author?       @relation(fields: [authorId], references: [id])
+  seoTitle        String        @default("")
+  seoDescription  String        @default("")
+  canonicalUrl    String        @default("")
+  robots          String        @default("index,follow")
+  ogTitle         String        @default("")
+  ogDescription   String        @default("")
+  ogImageId       String?
+  ogImage         Media?        @relation("BonusOg", fields: [ogImageId], references: [id])
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  categories BonusCategory[]
+  tags       BonusTag[]
+}
+
+model BonusCategory {
+  bonusId    String
+  categoryId String
+  bonus      BonusReview @relation(fields: [bonusId], references: [id], onDelete: Cascade)
+  category   Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([bonusId, categoryId])
+}
+
+model BonusTag {
+  bonusId String
+  tagId   String
+  bonus   BonusReview @relation(fields: [bonusId], references: [id], onDelete: Cascade)
+  tag     Tag         @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([bonusId, tagId])
+}
+
+model Menu {
+  id        String       @id @default(cuid())
+  name      String
+  location  MenuLocation @unique
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id        String     @id @default(cuid())
+  menuId    String
+  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  label     String
+  url       String
+  sortOrder Int        @default(0)
+  parentId  String?
+  parent    MenuItem?  @relation("MenuTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children  MenuItem[] @relation("MenuTree")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model SiteSettings {
+  id                   Int     @id @default(1)
+  siteName             String  @default("Casino Reviews")
+  tagline              String  @default("")
+  logoId               String?
+  logo                 Media?  @relation("SiteLogo", fields: [logoId], references: [id])
+  faviconId            String?
+  favicon              Media?  @relation("SiteFavicon", fields: [faviconId], references: [id])
+  defaultOgImageId     String?
+  defaultOgImage       Media?  @relation("SiteDefaultOg", fields: [defaultOgImageId], references: [id])
+  affiliateDisclosure  String  @default("We may earn a commission from links on this site. This does not affect our reviews.")
+  rgFooterText         String  @default("Gambling can be addictive. Please play responsibly. 18+ only.")
+  rgLinks              String  @default("[]") // JSON [{label,url}]
+  ageNotice            String  @default("18+")
+  contactEmail         String  @default("")
+  seoTitleTemplateCasino     String @default("{name} Review {year} | {site}")
+  seoDescTemplateCasino      String @default("Read our {name} review: ratings, bonuses, payments, and verdict.")
+  seoTitleTemplateBookmaker  String @default("{name} Review {year} | {site}")
+  seoDescTemplateBookmaker   String @default("Read our {name} bookmaker review: odds, markets, apps, and verdict.")
+  seoTitleTemplateBonus      String @default("{name} Bonus Review | {site}")
+  seoDescTemplateBonus       String @default("Full breakdown of the {name} bonus: amount, wagering, and terms.")
+  updatedAt            DateTime @updatedAt
+}
+
+model HomepageConfig {
+  id              Int    @id @default(1)
+  heroTitle       String @default("Find trusted casinos & bookmakers")
+  heroSubtitle    String @default("Independent reviews, clear ratings, and the latest bonuses.")
+  heroCtaLabel    String @default("Browse casinos")
+  heroCtaUrl      String @default("/casinos")
+  sections        String @default("[\"hero\",\"featuredCasinos\",\"comparison\",\"featuredBonuses\",\"faq\",\"trust\"]")
+  featuredCasinoIds    String @default("[]")
+  featuredBookmakerIds String @default("[]")
+  featuredBonusIds     String @default("[]")
+  faqItems        String @default("[]") // JSON [{question,answer}]
+  comparisonColumns String @default("[\"rating\",\"bonusHighlight\",\"payoutSpeed\",\"licenses\",\"cta\"]")
+  updatedAt       DateTime @updatedAt
+
+  rows ComparisonRow[]
+}
+
+model ComparisonRow {
+  id           String                @id @default(cuid())
+  homepageId   Int                   @default(1)
+  homepage     HomepageConfig        @relation(fields: [homepageId], references: [id], onDelete: Cascade)
+  entityType   ComparisonEntityType
+  entityId     String
+  sortOrder    Int                   @default(0)
+}
+
+model Redirect {
+  id        String   @id @default(cuid())
+  fromPath  String   @unique
+  toPath    String
+  createdAt DateTime @default(now())
+}
