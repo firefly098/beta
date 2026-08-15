@@ -18,7 +18,7 @@ export function CtaButton({
       href={href}
       target="_blank"
       rel="sponsored noopener noreferrer"
-      className={`cta-pulse inline-flex items-center justify-center rounded-full bg-[var(--brand)] px-5 py-2.5 text-sm font-bold text-[var(--brand-ink)] shadow-[0_10px_30px_rgba(11,99,246,0.35)] transition hover:-translate-y-0.5 hover:brightness-110 ${className}`}
+      className={`inline-flex items-center justify-center rounded-md bg-[var(--ink)] px-4 py-2.5 text-[13px] font-semibold text-[var(--accent)] transition hover:bg-[#1a1a1a] ${className}`}
     >
       {label || "Visit"}
     </a>
@@ -27,16 +27,13 @@ export function CtaButton({
 
 export function RgBlock({ text }: { text: string }) {
   return (
-    <aside className="mt-12 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow)]">
-      <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--muted)]">
+    <aside className="surface mt-12 p-5">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--muted)]">
         Responsible gambling
       </p>
       <p className="mt-2 text-sm leading-relaxed text-[var(--ink)]">{text}</p>
       <p className="mt-3">
-        <Link
-          href="/pages/responsible-gambling"
-          className="text-sm font-semibold text-[var(--brand)] hover:underline"
-        >
+        <Link href="/pages/responsible-gambling" className="text-sm font-semibold underline-offset-4 hover:underline">
           Read our RG guide
         </Link>
       </p>
@@ -45,29 +42,31 @@ export function RgBlock({ text }: { text: string }) {
 }
 
 export function Disclosure({ text }: { text: string }) {
-  return <p className="text-xs leading-relaxed opacity-80">{text}</p>;
+  return <p className="text-xs leading-relaxed text-[var(--muted)]">{text}</p>;
 }
 
 export function ProsCons({ pros, cons }: { pros: string[]; cons: string[] }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
-      <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow)]">
-        <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-[var(--ok)]">Pros</h3>
-        <ul className="mt-3 space-y-2 text-sm text-[var(--ink)]">
+    <div className="grid gap-3 sm:grid-cols-2">
+      <div className="surface p-5">
+        <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--ok)]">Pros</h3>
+        <ul className="mt-3 space-y-2.5 text-sm text-[var(--ink)]">
           {pros.map((p) => (
-            <li key={p} className="flex gap-2">
-              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--ok)]" />
+            <li key={p} className="flex gap-2.5">
+              <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-[var(--ok)]" />
               <span>{p}</span>
             </li>
           ))}
         </ul>
       </div>
-      <div className="rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow)]">
-        <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-[var(--danger)]">Cons</h3>
-        <ul className="mt-3 space-y-2 text-sm text-[var(--ink)]">
+      <div className="surface p-5">
+        <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--danger)]">
+          Cons
+        </h3>
+        <ul className="mt-3 space-y-2.5 text-sm text-[var(--ink)]">
           {cons.map((c) => (
-            <li key={c} className="flex gap-2">
-              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--danger)]" />
+            <li key={c} className="flex gap-2.5">
+              <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-[var(--danger)]" />
               <span>{c}</span>
             </li>
           ))}
@@ -96,16 +95,16 @@ export function SectionHeading({
   subtitle?: string;
 }) {
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-xl">
       {eyebrow ? (
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--brand)]">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="mt-2 font-display text-3xl font-semibold tracking-tight text-[var(--ink)] md:text-4xl">
+      <h2 className="mt-2 font-display text-[clamp(1.75rem,4vw,2.35rem)] font-semibold leading-[1.05] tracking-tight text-[var(--ink)]">
         {title}
       </h2>
-      {subtitle ? <p className="mt-3 text-[var(--muted)]">{subtitle}</p> : null}
+      {subtitle ? <p className="mt-3 text-[15px] leading-relaxed text-[var(--muted)]">{subtitle}</p> : null}
     </div>
   );
 }

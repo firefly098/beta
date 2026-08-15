@@ -130,38 +130,35 @@ export default async function HomePage() {
       {sections.map((section) => {
         if (section === "hero") {
           return (
-            <section
-              key="hero"
-              className="relative overflow-hidden border-b border-black/20 bg-[linear-gradient(145deg,var(--hero-from),var(--hero-via)_45%,var(--hero-to))] text-white"
-            >
-              <div className="hero-grid absolute inset-0 opacity-60" />
-              <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-[var(--brand)]/30 blur-3xl" />
-              <div className="absolute -left-16 bottom-0 h-64 w-64 rounded-full bg-[var(--accent)]/20 blur-3xl" />
-              <div className="site-shell relative py-20 md:py-28">
-                <p className="animate-fade text-xs font-bold uppercase tracking-[0.22em] text-[var(--accent)]">
+            <section key="hero" className="relative overflow-hidden border-b border-[var(--line)]">
+              <div className="absolute inset-0 bg-[var(--ink)]" />
+              <div className="absolute inset-y-0 right-0 w-[42%] bg-[radial-gradient(circle_at_30%_40%,rgba(184,240,0,0.22),transparent_60%)]" />
+              <div className="site-shell relative py-16 md:py-24">
+                <p className="animate-fade text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
                   {settings.siteName}
                 </p>
-                <h1 className="animate-rise mt-5 max-w-3xl font-display text-5xl font-semibold leading-[1.05] tracking-tight md:text-6xl">
+                <h1 className="animate-reveal mt-5 max-w-[14ch] font-display text-[clamp(2.6rem,8vw,4.6rem)] font-semibold leading-[0.95] tracking-tight text-white">
                   {config.heroTitle}
                 </h1>
-                <p className="animate-rise-delay mt-5 max-w-xl text-lg text-white/75">
+                <div className="accent-line mt-6 h-px w-24 bg-[var(--accent)]" />
+                <p className="animate-reveal-2 mt-6 max-w-md text-[15px] leading-relaxed text-white/65">
                   {config.heroSubtitle}
                 </p>
-                <div className="animate-rise-delay mt-9 flex flex-wrap items-center gap-4">
+                <div className="animate-reveal-3 mt-8 flex flex-wrap items-center gap-3">
                   <Link
                     href={config.heroCtaUrl || "/casinos"}
-                    className="cta-pulse inline-flex rounded-full bg-white px-6 py-3 text-sm font-bold text-[var(--ink)] shadow-[0_12px_40px_rgba(0,0,0,0.25)] transition hover:-translate-y-0.5"
+                    className="inline-flex rounded-md bg-[var(--accent)] px-4 py-2.5 text-[13px] font-semibold text-[var(--accent-ink)] transition hover:brightness-95"
                   >
                     {config.heroCtaLabel || "Browse casinos"}
                   </Link>
                   <Link
                     href="/bookmakers"
-                    className="text-sm font-semibold text-white/80 hover:text-white"
+                    className="text-[13px] font-medium text-white/70 transition hover:text-white"
                   >
-                    Compare bookmakers →
+                    Bookmakers
                   </Link>
                 </div>
-                <div className="mt-8 max-w-xl text-white/55">
+                <div className="mt-8 max-w-md text-white/40">
                   <Disclosure text={settings.affiliateDisclosure} />
                 </div>
               </div>
@@ -171,13 +168,13 @@ export default async function HomePage() {
 
         if (section === "featuredCasinos") {
           return (
-            <section key="featuredCasinos" className="site-shell py-16 md:py-20">
+            <section key="featuredCasinos" className="site-shell py-14 md:py-16">
               <SectionHeading
                 eyebrow="Casinos"
-                title="Featured casino reviews"
-                subtitle="Licensing, payments, and bonuses broken down without the fluff."
+                title="Featured reviews"
+                subtitle="Licensing, payments, and bonuses without the fluff."
               />
-              <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
                 {casinos.map((c) => (
                   <ReviewCard
                     key={c.id}
@@ -198,17 +195,17 @@ export default async function HomePage() {
         if (section === "featuredBookmakers" || section === "featuredBonuses") {
           const isBonus = section === "featuredBonuses";
           return (
-            <section key={section} className="site-shell py-16 md:py-20">
+            <section key={section} className="site-shell py-14 md:py-16">
               <SectionHeading
                 eyebrow={isBonus ? "Bonuses" : "Bookmakers"}
-                title={isBonus ? "Featured bonus reviews" : "Featured bookmaker reviews"}
+                title={isBonus ? "Featured bonuses" : "Featured bookmakers"}
                 subtitle={
                   isBonus
-                    ? "Wagering, amounts, and terms explained clearly."
+                    ? "Amounts, wagering, and terms explained clearly."
                     : "Odds, markets, apps, and payout reliability."
                 }
               />
-              <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
                 {isBonus
                   ? bonuses.map((c) => (
                       <ReviewCard
@@ -236,12 +233,12 @@ export default async function HomePage() {
 
         if (section === "comparison") {
           return (
-            <section key="comparison" className="border-y border-[var(--line)] bg-[var(--surface)]/70 py-16 md:py-20">
+            <section key="comparison" className="border-y border-[var(--line)] bg-[var(--surface)] py-14 md:py-16">
               <div className="site-shell">
                 <SectionHeading
                   eyebrow="Compare"
-                  title="Top operators side by side"
-                  subtitle="Ratings, bonuses, and payout speed in one table."
+                  title="Side by side"
+                  subtitle="Ratings, bonuses, and payout speed."
                 />
                 <div className="mt-8">
                   <ComparisonTable rows={comparisonRows} columns={columns} />
@@ -253,21 +250,18 @@ export default async function HomePage() {
 
         if (section === "faq") {
           return (
-            <section key="faq" className="site-shell py-16 md:py-20">
-              <SectionHeading eyebrow="FAQ" title="Common questions" />
-              <div className="mt-8 space-y-3">
+            <section key="faq" className="site-shell py-14 md:py-16">
+              <SectionHeading eyebrow="FAQ" title="Questions" />
+              <div className="mt-8 space-y-2">
                 {faq.map((f) => (
-                  <details
-                    key={f.question}
-                    className="group rounded-[1.1rem] border border-[var(--line)] bg-[var(--surface)] px-5 py-4 shadow-[var(--shadow)] open:border-[var(--brand)]/30"
-                  >
-                    <summary className="cursor-pointer list-none font-semibold text-[var(--ink)] marker:content-none">
+                  <details key={f.question} className="surface group px-4 py-3.5 open:bg-[var(--wash)]/40">
+                    <summary className="cursor-pointer list-none text-[15px] font-semibold text-[var(--ink)] marker:content-none">
                       <span className="flex items-center justify-between gap-4">
                         {f.question}
                         <span className="text-[var(--muted)] transition group-open:rotate-45">+</span>
                       </span>
                     </summary>
-                    <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{f.answer}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">{f.answer}</p>
                   </details>
                 ))}
               </div>
@@ -277,19 +271,16 @@ export default async function HomePage() {
 
         if (section === "trust") {
           return (
-            <section
-              key="trust"
-              className="border-t border-[var(--line)] bg-[linear-gradient(180deg,#0e1525_0%,#163053_100%)] py-16 text-white"
-            >
+            <section key="trust" className="border-t border-[var(--line)] bg-[var(--ink)] py-14 text-white">
               <div className="site-shell">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--accent)]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--accent)]">
                   Trust
                 </p>
-                <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold tracking-tight md:text-4xl">
+                <h2 className="mt-3 max-w-lg font-display text-[clamp(1.8rem,4vw,2.5rem)] font-semibold tracking-tight">
                   Play responsibly
                 </h2>
-                <p className="mt-4 max-w-2xl text-white/70">{settings.rgFooterText}</p>
-                <p className="mt-5 text-sm font-bold tracking-wide">{settings.ageNotice} only</p>
+                <p className="mt-4 max-w-lg text-sm leading-relaxed text-white/60">{settings.rgFooterText}</p>
+                <p className="mt-5 text-[11px] font-semibold tracking-[0.14em]">{settings.ageNotice} ONLY</p>
               </div>
             </section>
           );

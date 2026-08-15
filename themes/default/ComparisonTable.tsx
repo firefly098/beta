@@ -27,67 +27,74 @@ export function ComparisonTable({
   const show = (key: string) => columns.includes(key);
 
   return (
-    <div className="overflow-hidden rounded-[1.25rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow)]">
+    <div className="surface overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[760px] text-left text-sm">
-          <thead className="bg-[var(--ink)] text-white">
-            <tr>
-              <th className="px-5 py-4 text-xs font-bold uppercase tracking-[0.14em]">Operator</th>
+        <table className="w-full min-w-[700px] text-left text-sm">
+          <thead>
+            <tr className="border-b border-[var(--line)] bg-[var(--wash)]/70">
+              <th className="px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                Operator
+              </th>
               {show("rating") ? (
-                <th className="px-5 py-4 text-xs font-bold uppercase tracking-[0.14em]">Rating</th>
+                <th className="px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  Rating
+                </th>
               ) : null}
               {show("bonusHighlight") ? (
-                <th className="px-5 py-4 text-xs font-bold uppercase tracking-[0.14em]">Bonus</th>
+                <th className="px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  Bonus
+                </th>
               ) : null}
               {show("payoutSpeed") ? (
-                <th className="px-5 py-4 text-xs font-bold uppercase tracking-[0.14em]">Payout</th>
+                <th className="px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  Payout
+                </th>
               ) : null}
               {show("licenses") ? (
-                <th className="px-5 py-4 text-xs font-bold uppercase tracking-[0.14em]">License</th>
+                <th className="px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
+                  License
+                </th>
               ) : null}
               {show("cta") ? (
-                <th className="sticky right-0 bg-[var(--ink)] px-5 py-4 text-xs font-bold uppercase tracking-[0.14em]">
+                <th className="sticky right-0 bg-[var(--wash)] px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
                   Offer
                 </th>
               ) : null}
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, i) => (
-              <tr
-                key={row.id}
-                className={`border-t border-[var(--line)] ${i % 2 === 0 ? "bg-white" : "bg-[var(--wash)]/50"}`}
-              >
-                <td className="px-5 py-4 font-semibold">
-                  <Link href={row.href} className="hover:text-[var(--brand)]">
+            {rows.map((row) => (
+              <tr key={row.id} className="border-t border-[var(--line)]">
+                <td className="px-4 py-3.5 font-semibold">
+                  <Link href={row.href} className="hover:underline">
                     {row.name}
                   </Link>
                 </td>
                 {show("rating") ? (
-                  <td className="px-5 py-4">
-                    <span className="inline-flex rounded-full bg-[var(--ink)] px-2.5 py-1 text-xs font-bold text-white">
+                  <td className="px-4 py-3.5">
+                    <span className="rounded-md bg-[var(--ink)] px-2 py-0.5 text-xs font-bold text-[var(--accent)]">
                       {row.rating.toFixed(1)}
                     </span>
                   </td>
                 ) : null}
                 {show("bonusHighlight") ? (
-                  <td className="px-5 py-4 text-[var(--muted)]">{row.bonusHighlight || "—"}</td>
+                  <td className="px-4 py-3.5 text-[var(--muted)]">{row.bonusHighlight || "—"}</td>
                 ) : null}
                 {show("payoutSpeed") ? (
-                  <td className="px-5 py-4 text-[var(--muted)]">{row.payoutSpeed || "—"}</td>
+                  <td className="px-4 py-3.5 text-[var(--muted)]">{row.payoutSpeed || "—"}</td>
                 ) : null}
                 {show("licenses") ? (
-                  <td className="px-5 py-4 text-[var(--muted)]">
+                  <td className="px-4 py-3.5 text-[var(--muted)]">
                     {parseJsonArray(row.licenses).join(", ") || "—"}
                   </td>
                 ) : null}
                 {show("cta") ? (
-                  <td className="sticky right-0 bg-inherit px-5 py-4">
+                  <td className="sticky right-0 bg-[var(--surface)] px-4 py-3.5">
                     <CtaButton
                       label={row.ctaLabel}
                       url={row.ctaUrl}
                       tracking={row.ctaTracking}
-                      className="whitespace-nowrap !px-4 !py-2 !text-xs"
+                      className="!px-3 !py-1.5 !text-[11px]"
                     />
                   </td>
                 ) : null}

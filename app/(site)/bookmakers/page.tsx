@@ -17,13 +17,13 @@ export default async function BookmakersArchivePage() {
   });
 
   return (
-    <main className="site-shell py-14">
+    <main className="site-shell py-12 md:py-14">
       <SectionHeading
         eyebrow="Directory"
         title="Bookmaker reviews"
         subtitle="Odds quality, live markets, apps, and payout reliability."
       />
-      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {items.map((c) => (
           <ReviewCard
             key={c.id}

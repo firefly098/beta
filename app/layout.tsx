@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import { Syne, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const display = Fraunces({
+const display = Syne({
   variable: "--font-display",
   subsets: ["latin"],
-  axes: ["SOFT", "WONK", "opsz"],
+  weight: ["500", "600", "700", "800"],
 });
 
-const sans = Manrope({
+const sans = Plus_Jakarta_Sans({
   variable: "--font-sans-ui",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Casino Reviews",
+  title: "Bet Desk Reviews",
   description: "Independent casino and bookmaker reviews",
 };
 
